@@ -33,25 +33,25 @@
                     <span class="require">* Required Fields</span>
                     <div class="row">
                         <div class="col-25">
-                            <label for="from_loc" class="required">From :</label>
+                            <label for="from_loc" class="required">What ZIP Code are you mailing from?</label>
                         </div>
                         <div class="col-35">
-                            <input type="text" id="from_loc" name="from" placeholder="22030" pattern="[0-9]{5}" value="" required>
+                            <input type="text" id="from_loc" name="from" placeholder="5-Digit ZIP Code" pattern="[0-9]{5}" value="" required>
                             <span id="fromerrormsg" class="error"></span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-25">
-                            <label for="to_loc" class="required">To :</label>
+                            <label for="to_loc" class="required">What ZIP Code are you mailing to?</label>
                         </div>
                         <div class="col-35">
-                            <input type="text" id="to_loc" name="to" placeholder="22031" pattern="[0-9]{5}" value="" required>  
+                            <input type="text" id="to_loc" name="to" placeholder="5-Digit ZIP Code" pattern="[0-9]{5}" value="" required>  
                             <span id="toerrormsg" class="error"></span>     
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-25">
-                            <label for="date" class="required">Date you plan to ship :</label>
+                            <label for="date" class="required">Date you plan to ship:</label>
                         </div>
                         <div class="col-35">
                             <input type="date" id="date" name="shipdate" placeholder="MM/DD/YYYY" required>
