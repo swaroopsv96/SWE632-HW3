@@ -30,7 +30,7 @@
                 $('#date').attr('min', minDate);
 
                 $('[id*=from_loc]').on('blur', function () {
-                var url = 'http://ziptasticapi.com/' + $(this).val().trim();
+                var url = 'https://ziptasticapi.com/' + $(this).val().trim();
                 $.getJSON(url, function (response) {
                     if(response.error) {
                         $('[id=fromerrormsg]').html(response.error);
@@ -46,7 +46,7 @@
                 });
 
                 $('[id*=to_loc]').on('blur', function () {
-                var url = 'http://ziptasticapi.com/' + $(this).val().trim();
+                var url = 'https://ziptasticapi.com/' + $(this).val().trim();
                 $.getJSON(url, function (response) {
                     if(response.error) {
                         $('[id=toerrormsg]').html(response.error);
