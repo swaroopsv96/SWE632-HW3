@@ -28,25 +28,40 @@
                 var minDate= year + '-' + month + '-' + day;
                 
                 $('#date').attr('min', minDate);
+
+                $('[id*=from_loc]').on('blur', function () {
+                var url = 'http://ziptasticapi.com/' + $(this).val().trim();
+                $.getJSON(url, function (response) {
+                    if(response.error) {
+                        $('[id=fromerrormsg]').html(response.error);
+                        $('[id=city]').html("");
+                        $('[id=state]').html("");
+                    } 
+                        $('[id=city]').html(response.city);
+                        $('[id=state]').html(response.state);
+                    if(response.city) {
+                        $('[id=fromerrormsg]').html(" ");
+                    }             
+                });
+                });
+
+                $('[id*=to_loc]').on('blur', function () {
+                var url = 'http://ziptasticapi.com/' + $(this).val().trim();
+                $.getJSON(url, function (response) {
+                    if(response.error) {
+                        $('[id=toerrormsg]').html(response.error);
+                        $('[id=tocity]').html("");
+                        $('[id=tostate]').html("");
+                    } 
+                        $('[id=tocity]').html(response.city);
+                        $('[id=tostate]').html(response.state);
+                    if(response.city) {
+                        $('[id=toerrormsg]').html("");
+                    }
+                                   
+                });
+                });
             });
-            var zipcode = 90210;
-            var clientKey = 'eb2ac5f625bf40d4e6c3dfc63337f926';
-            var url = "https://service.zipapi.us/zipcode/" + zipcode + "?X-API-KEY=" + clientKey + "&fields=geolocation,population";
-
-            var xhttp = new XMLHttpRequest();
-            xhttp.open("GET", url, true);
-            xhttp.setRequestHeader("Access-Control-Allow-Origin", url);
-
-            xhttp.onreadystatechange = function() {
-
-                if (this.readyState == 4) {
-
-                    document.getElementById("demo").innerHTML = this.responseText;
-                }
-
-
-            };            
-            xhttp.send();
         </script>
     </head>    
     <body>
@@ -76,6 +91,22 @@
                             <span id="fromerrormsg" class="error"></span>
                         </div>
                     </div>
+                    <!-- <div class="row">
+                        <div class="col-25">
+                            <label for="state">Mailing from state: </label>
+                        </div>
+                        <div class="col-35">
+                            <label id="state"></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="city">Mailing from city: </label>
+                        </div>
+                        <div class="col-35">
+                            <label id="city"></label>                
+                        </div>
+                    </div> -->
                     <div class="row">
                         <div class="col-25">
                             <label for="to_loc" class="required">What ZIP Code are you mailing to?</label>
@@ -85,13 +116,29 @@
                             <span id="toerrormsg" class="error"></span>     
                         </div>
                     </div>
+                    <!-- <div class="row">
+                        <div class="col-25">
+                            <label for="tostate">Mailing to state: </label>
+                        </div>
+                        <div class="col-35">
+                            <label id="tostate"></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="tocity">Mailing to city: </label>
+                        </div>
+                        <div class="col-35">
+                            <label id="tocity"></label>                
+                        </div>
+                    </div> -->
                     <div class="row">
                         <div class="col-25">
                             <label for="date" class="required">Date you plan to ship:</label>
                         </div>
                         <div class="col-35">
                             <input type="date" id="date" name="shipdate" placeholder="MM/DD/YYYY" required>
-                            <span id="demo" class="error"></span> 
+                            <span id="dateerrormsg" class="error"></span> 
                         </div>
                     </div>
                     <div class="row">
