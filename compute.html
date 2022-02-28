@@ -29,6 +29,24 @@
                 
                 $('#date').attr('min', minDate);
             });
+            var zipcode = 90210;
+            var clientKey = 'eb2ac5f625bf40d4e6c3dfc63337f926';
+            var url = "https://service.zipapi.us/zipcode/" + zipcode + "?X-API-KEY=" + clientKey + "&fields=geolocation,population";
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", url, true);
+            xhttp.setRequestHeader("Access-Control-Allow-Origin", url);
+
+            xhttp.onreadystatechange = function() {
+
+                if (this.readyState == 4) {
+
+                    document.getElementById("demo").innerHTML = this.responseText;
+                }
+
+
+            };            
+            xhttp.send();
         </script>
     </head>    
     <body>
@@ -73,7 +91,7 @@
                         </div>
                         <div class="col-35">
                             <input type="date" id="date" name="shipdate" placeholder="MM/DD/YYYY" required>
-                            <span id="dateerrormsg" class="error"></span> 
+                            <span id="demo" class="error"></span> 
                         </div>
                     </div>
                     <div class="row">
