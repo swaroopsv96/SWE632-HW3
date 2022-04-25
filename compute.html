@@ -8,12 +8,16 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="./owlcarousel/owl.carousel.min.js"></script>        
         <script src="./js/script.js" type="text/javascript"></script>
+        <script src="./js/stateAbbreviations.js"></script>
         <link rel="icon" type="image/x-icon" href="./img/favicon.ico">
         <link rel="stylesheet" href="./css/styles.css">
         <link rel="stylesheet" href="owlcarousel/owl.carousel.min.css">
         <link rel="stylesheet" href="owlcarousel/owl.theme.default.min.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
         <script>
+            function formatString(str) {
+              return str.replace(/(\B)[^ ]*/g, match => (match.toLowerCase())).replace(/^[^ ]/g, match => (match.toUpperCase()));
+            }
            $(function(){
                 var dtToday = new Date();
                 
@@ -36,11 +40,13 @@
                         $('[id=fromerrormsg]').html(response.error);
                         $('[id=city]').html("");
                         $('[id=state]').html("");
+                        $('#submit').attr('disabled', true);
                     } 
-                        $('[id=city]').html(response.city);
-                        $('[id=state]').html(response.state);
+                        $('[id=city]').html(formatString(response.city));
+                        $('[id=state]').html(convertRegion(response.state,TO_NAME));
                     if(response.city) {
                         $('[id=fromerrormsg]').html(" ");
+                        $('#submit').attr('disabled', false);
                     }             
                 });
                 });
@@ -52,16 +58,36 @@
                         $('[id=toerrormsg]').html(response.error);
                         $('[id=tocity]').html("");
                         $('[id=tostate]').html("");
+                        $('#submit').attr('disabled', true);
                     } 
-                        $('[id=tocity]').html(response.city);
-                        $('[id=tostate]').html(response.state);
+                        $('[id=tocity]').html(formatString(response.city));
+                        $('[id=tostate]').html(convertRegion(response.state,TO_NAME));
                     if(response.city) {
                         $('[id=toerrormsg]').html("");
+                        $('#submit').attr('disabled', false);
                     }
-                                   
+                    var fromzip = $('[id*=from_loc]').val();
+                    var fromzipcodeerror = 'https://ziptasticapi.com/' + fromzip;
+                    $.getJSON(fromzipcodeerror, function (fromresponse) {
+                        if(fromresponse.error) {
+                            $('#submit').attr('disabled', true);
+                        }
+                    });                                   
                 });
-                });
+                });                                
             });
+            function sendEmail(){
+                alert("Email Sent");
+                var tableData = $('#cost-tables').html();   
+                const sendData = {
+                    tData:tableData,
+                    mailId:document.getElementById("email").value
+                }         
+                var data = JSON.stringify(sendData);                
+                $.post("https://nodejs-email-service.herokuapp.com/subscribe/", sendData, function(data,status){
+                    alert(data);
+                });
+            }
         </script>
     </head>    
     <body>
@@ -69,14 +95,20 @@
             <div class="header-content">
                 <a href="index.html" style="padding-left: revert;"><img src="./img/logo.png" alt="Delivery 360"></a>
                 <div class="header-right">
-                    <a href="index.html">Home</a>
-                    <a href="about-us.html">About Us</a>
-                    <a class="active" href="compute.html">Compute Cost</a>
+                    <a href="index.html"><li class="fas fa-home"><span style="font-family: 'mikadolight',sans-serif !important; margin-left: 5px;">Home</span></li></a>
+                    <a href="about-us.html"><li class="fas fa-users"><span style="font-family: 'mikadolight',sans-serif !important; margin-left: 5px;">About Us</span></li></a>
+                    <a class="active" href="compute.html"><li class="fas fa-calculator"><span style="font-family: 'mikadolight',sans-serif !important; margin-left: 5px;">Compute Cost</span></li></a>
                 </div>
             </div>
             
         </header>
         <div class="home_content">
+            <div class="section">
+            <ul>
+              <li class="symbol"><a href="index.html" title="Go to Home Page">Home</a></li>
+              <li class="text symbol">Compute Cost</li>     
+            </ul>
+            </div>
             <p>Delivery 360 is started to provide shipping cost between one place to another place, of various delivery organizations. This is one stop place for customer to get all the information</p>
 
             <div class="form_container">
@@ -91,7 +123,7 @@
                             <span id="fromerrormsg" class="error"></span>
                         </div>
                     </div>
-                    <!-- <div class="row">
+                    <div class="row">
                         <div class="col-25">
                             <label for="state">Mailing from state: </label>
                         </div>
@@ -106,17 +138,17 @@
                         <div class="col-35">
                             <label id="city"></label>                
                         </div>
-                    </div> -->
+                    </div>
                     <div class="row">
                         <div class="col-25">
                             <label for="to_loc" class="required">What ZIP Code are you mailing to?</label>
                         </div>
                         <div class="col-35">
                             <input type="text" id="to_loc" name="to" placeholder="5-Digit ZIP Code" pattern="[0-9]{5}" value="" required>  
-                            <span id="toerrormsg" class="error"></span>     
+                            <span id="toerrormsg" class="error"></span>
                         </div>
                     </div>
-                    <!-- <div class="row">
+                    <div class="row">
                         <div class="col-25">
                             <label for="tostate">Mailing to state: </label>
                         </div>
@@ -131,23 +163,67 @@
                         <div class="col-35">
                             <label id="tocity"></label>                
                         </div>
-                    </div> -->
+                    </div>
                     <div class="row">
                         <div class="col-25">
                             <label for="date" class="required">Date you plan to ship:</label>
                         </div>
                         <div class="col-35">
-                            <input type="date" id="date" name="shipdate" placeholder="MM/DD/YYYY" required>
-                            <span id="dateerrormsg" class="error"></span> 
+                            <input type="date" id="date" name="shipdate" placeholder="MM/DD/YYYY" required>                            
+                        </div>
+                    </div>
+                    <br>
+                    <div class="accurateweight">
+                    Actual dimensions/weight will provide more accurate cost.
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="weight" class="required">Package weight (lbs):</label>
+                        </div>
+                        <div class="col-35">
+                            <input type="number" id="weight" name="weight" required step=".01">
+                        </div>
+                    </div>                   
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="length">Package length (inches):</label>
+                        </div>
+                        <div class="col-35">
+                            <input type="number" id="length" name="length" step=".01">                            
                         </div>
                     </div>
                     <div class="row">
-                        <input type="submit" id="submit" value="Calculate">
+                        <div class="col-25">
+                            <label for="width">Package width (inches):</label>
+                        </div>
+                        <div class="col-35">
+                            <input type="number" id="width" name="width" step=".01">                            
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="height">Package height (inches):</label>
+                        </div>
+                        <div class="col-35">
+                            <input type="number" id="height" name="height" step=".01">                            
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <input type="submit" id="submit" value="Calculate" onclick="enable()">
                     </div>
                 </form>
             </div>
-            <br>
+            
             <table id="cost-tables" class="cost-table hide">
+                <div class="row hide" style="float:right;" id="sort">
+                <label for="sort">Cost Sort By:</label>
+                    <select name="sort" id="sort">
+                        <option value="Hightolow">High to Low</option>
+                        <option value="lowtohigh">Low to High</option>
+                    </select>
+                </div>
                 <thead>
                     <tr>
                         <th>Courier</th>
@@ -157,18 +233,58 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>USPS - Priority Mail</td>
-                        <td id="uspsprioritycost"></td>
-                        <td id="uspspriorityeta"></td>
+                        <td>UPS - UPS Next Day Air</td>
+                        <td id="upspriorityexpresscost"></td>
+                        <td id="upspriorityexpresseta"></td>
                     </tr>
-                    <tr>
+                    
+                        <tr>
                         <td>USPS - Priority Mail Express</td>
                         <td id="uspspriorityexpresscost"></td>
                         <td id="uspspriorityexpresseta"></td>
                     </tr>
+                    
+                      <tr>
+                        <td>FedEx - FedEx Priority Overnight</td>
+                        <td id="fedxpriorityexpresscost"></td>
+                        <td id="fedxpriorityexpresseta"></td>
+                    </tr>
+                  
+                    
+                      <tr>
+                        <td>USPS - Priority Mail</td>
+                        <td id="uspsprioritycost"></td>
+                        <td id="uspspriorityeta"></td>
+                    </tr>
+                     <tr>
+                        <td>UPS - UPS Ground</td>
+                        <td id="upsprioritycost"></td>
+                        <td id="upspriorityeta"></td>
+                         
+                    </tr>
+                       <tr>
+                        <td>FedEx - FedEx 2Day</td>
+                        <td id="fedxprioritycost"></td>
+                        <td id="fedxpriorityeta"></td>
+                    </tr>
                 </tbody>
             </table>
+        <div>
+            <form method="POST" id="email_form" style="display:none;" class="form_container">
+                <div class="row">
+                    <div class="col-25">
+                        <label for="email">Email the quote:</label>
+                    </div>
+                    <div class="col-35">
+                        <input id="email" type="email" placeholder="Email">
+                    </div>
+                    <div class="row">
+                        <input type="button" value="Submit" onclick="sendEmail()">
+                    </div>
+                </div>                
+            </form>
         </div>
+        </div>      
         <footer class="page-footer">
             <div class="footer content">
                 <div class="footer-inner">
@@ -217,5 +333,9 @@
             <small class="copyright"><span>All content © Delivery 360. All Rights Reserved.</span></small> 
         </div>
         </footer>
+        <!-- <script type="text/javascript">!function(t,e){t.artibotApi={l:[],t:[],on:function(){this.l.push(arguments)},trigger:function(){this.t.push(arguments)}};var a=!1,i=e.createElement("script");i.async=!0,i.type="text/javascript",i.src="https://app.artibot.ai/loader.js",e.getElementsByTagName("head").item(0).appendChild(i),i.onreadystatechange=i.onload=function(){if(!(a||this.readyState&&"loaded"!=this.readyState&&"complete"!=this.readyState)){new window.ArtiBot({i:"29cb2bfe-06ca-429e-b880-ebc798f5f47a"});a=!0}}}(window,document);</script> -->
+        <script type='text/javascript'>
+        (function(I, L, T, i, c, k, s) {if(I.iticks) return;I.iticks = {host:c, settings:s, clientId:k, cdn:L, queue:[]};var h = T.head || T.documentElement;var e = T.createElement(i);var l = I.location;e.async = true;e.src = (L||c)+'/client/inject-v2.min.js';h.insertBefore(e, h.firstChild);I.iticks.call = function(a, b) {I.iticks.queue.push([a, b]);};})(window, 'https://cdn-v1.intelliticks.com/prod/common', document, 'script', 'https://app.intelliticks.com', 'JqnyixLjMpSiNHgFN_c', {});
+        </script>
     </body>
 </html>
