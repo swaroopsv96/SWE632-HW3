@@ -209,7 +209,7 @@ label {
     padding: 12px 12px 12px 0;
     display: inline-block;
 }  
-input[type=submit],input[type=button] {
+input[type=submit],input[type=button],input[type=reset] {
     background-color: #212121;
     font-family: "mikadolight",sans-serif !important;
     color: white;
