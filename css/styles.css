@@ -145,9 +145,6 @@ body {
     text-align: left;
 }
 
-
-
-
 .about-us .desc {
     text-align: center;
 }
@@ -241,7 +238,7 @@ input[type="submit"]:disabled {
     font-weight: 600;
 }
   
-  /* Clear floats after the columns */
+/* Clear floats after the columns */
 .row {
     padding: 2px 2px 2px 0;
 }
@@ -320,7 +317,7 @@ footer {
     width: 25%;
 }
 .footer-cols h3 {
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 900;
     color: #fff;
     padding-bottom: 7px;
@@ -337,6 +334,7 @@ footer {
 .footer-cols ul li a {
     color: rgba(255,255,255,.59);
     text-decoration: none;
+    font-size: 18px;
 }
 ul.contact-detail {
     padding-top: 13px !important;
