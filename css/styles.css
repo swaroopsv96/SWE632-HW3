@@ -293,6 +293,25 @@ input[type="submit"]:disabled {
   text-align: left;
   background-color: #212121;
   color: white;
+  cursor: pointer;
+}
+.cost-table .th-sort-asc::after {
+  content: "\25b4";
+}
+
+.cost-table .th-sort-desc::after {
+  content: "\25be";
+}
+
+.cost-table .th-sort-asc::after,
+.cost-table .th-sort-desc::after {
+  margin-left: 5px;
+}
+
+.cost-table .th-sort-asc,
+.cost-table .th-sort-desc {
+  background: rgba(0, 0, 0, 0.1);
+  color: black;
 }
 
 /* Footer */

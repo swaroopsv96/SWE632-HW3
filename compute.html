@@ -211,21 +211,14 @@
                     </div>
                     
                     <div class="row">
-                        <input type="submit" id="submit" value="Calculate" onclick="enable()">
+                        <input type="submit" id="submit" value="Calculate">
                         <input type="reset" id="reset" value="Reset Form">
                     </div>
                 </form>
             </div>
-            
             <table id="cost-tables" class="cost-table hide">
-                <div class="row hide" style="float:right;" id="sort">
-                <label for="sort">Cost Sort By:</label>
-                    <select name="sort" id="sort">
-                        <option value="Hightolow">High to Low</option>
-                        <option value="lowtohigh">Low to High</option>
-                    </select>
-                </div>
                 <thead>
+                    <p id="note"></p>
                     <tr>
                         <th>Courier</th>
                         <th>Cost</th>
@@ -334,9 +327,45 @@
             <small class="copyright"><span>All content © Delivery 360. All Rights Reserved.</span></small> 
         </div>
         </footer>
-        <!-- <script type="text/javascript">!function(t,e){t.artibotApi={l:[],t:[],on:function(){this.l.push(arguments)},trigger:function(){this.t.push(arguments)}};var a=!1,i=e.createElement("script");i.async=!0,i.type="text/javascript",i.src="https://app.artibot.ai/loader.js",e.getElementsByTagName("head").item(0).appendChild(i),i.onreadystatechange=i.onload=function(){if(!(a||this.readyState&&"loaded"!=this.readyState&&"complete"!=this.readyState)){new window.ArtiBot({i:"29cb2bfe-06ca-429e-b880-ebc798f5f47a"});a=!0}}}(window,document);</script> -->
         <script type='text/javascript'>
         (function(I, L, T, i, c, k, s) {if(I.iticks) return;I.iticks = {host:c, settings:s, clientId:k, cdn:L, queue:[]};var h = T.head || T.documentElement;var e = T.createElement(i);var l = I.location;e.async = true;e.src = (L||c)+'/client/inject-v2.min.js';h.insertBefore(e, h.firstChild);I.iticks.call = function(a, b) {I.iticks.queue.push([a, b]);};})(window, 'https://cdn-v1.intelliticks.com/prod/common', document, 'script', 'https://app.intelliticks.com', 'JqnyixLjMpSiNHgFN_c', {});
+
+        function sortTableByColumn(table, column, asc = true) {
+            const dirModifier = asc ? 1 : -1;
+            const tBody = table.tBodies[0];
+            const rows = Array.from(tBody.querySelectorAll("tr"));
+
+            // Sort each row
+            const sortedRows = rows.sort((a, b) => {
+                const aColText = a.querySelector(`td:nth-child(${ column + 1 })`).textContent.trim();
+                const bColText = b.querySelector(`td:nth-child(${ column + 1 })`).textContent.trim();
+
+                return aColText > bColText ? (1 * dirModifier) : (-1 * dirModifier);
+            });
+
+            // Remove all existing TRs from the table
+            while (tBody.firstChild) {
+                tBody.removeChild(tBody.firstChild);
+            }
+
+            // Re-add the newly sorted rows
+            tBody.append(...sortedRows);
+
+            // Remember how the column is currently sorted
+            table.querySelectorAll("th").forEach(th => th.classList.remove("th-sort-asc", "th-sort-desc"));
+            table.querySelector(`th:nth-child(${ column + 1})`).classList.toggle("th-sort-asc", asc);
+            table.querySelector(`th:nth-child(${ column + 1})`).classList.toggle("th-sort-desc", !asc);
+        }
+
+        document.querySelectorAll(".cost-table th").forEach(headerCell => {
+            headerCell.addEventListener("click", () => {
+                const tableElement = headerCell.parentElement.parentElement.parentElement;
+                const headerIndex = Array.prototype.indexOf.call(headerCell.parentElement.children, headerCell);
+                const currentIsAscending = headerCell.classList.contains("th-sort-asc");
+
+                sortTableByColumn(tableElement, headerIndex, !currentIsAscending);
+            });
+});
         </script>
     </body>
 </html>

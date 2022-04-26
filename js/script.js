@@ -12,6 +12,7 @@ function costFunc(){
     var weight = document.getElementById('weight').value;
 
     if(from != "" && to != "" & date != "") {
+        document.getElementById('note').innerHTML = "Click on column header to sort the columns.";
         if (diffInDays < 7){
             if (weight < 10){
                 var cost1 = excost + weight * 1.5;
