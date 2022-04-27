@@ -39,8 +39,8 @@ function costFunc(){
                 document.getElementById('upspriorityeta').innerHTML = new Date(estimated).toJSON().slice(0,10);
                 document.getElementById('upspriorityexpresseta').innerHTML = new Date(estimatedexpress).toJSON().slice(0,10);
                 document.getElementById("cost-tables").classList.remove('hide');
-                document.getElementById("sort").classList.remove('hide');
                 document.getElementById("email_form").style.display = "block";
+//                 document.getElementById("sort").classList.remove('hide');
             }
             else if (weight >= 10 & weight < 25){
                 var cost1 = excost + weight * 2.5;
@@ -68,7 +68,7 @@ function costFunc(){
                 document.getElementById('upspriorityexpresseta').innerHTML = new Date(estimatedexpress).toJSON().slice(0,10);
                 document.getElementById("cost-tables").classList.remove('hide');
                 document.getElementById("email_form").style.display = "block";
-                document.getElementById("sort").classList.remove('hide');
+//                 document.getElementById("sort").classList.remove('hide');
             }
             else {
                 var cost1 = excost + weight * 5;
@@ -96,7 +96,7 @@ function costFunc(){
                 document.getElementById('upspriorityexpresseta').innerHTML = new Date(estimatedexpress).toJSON().slice(0,10);
                 document.getElementById("cost-tables").classList.remove('hide');
                 document.getElementById("email_form").style.display = "block";
-                document.getElementById("sort").classList.remove('hide');
+//                 document.getElementById("sort").classList.remove('hide');
              
             }
         }
@@ -127,7 +127,7 @@ function costFunc(){
                 document.getElementById('upspriorityexpresseta').innerHTML = new Date(estimatedexpress).toJSON().slice(0,10);
                 document.getElementById("cost-tables").classList.remove('hide');               
                 document.getElementById("email_form").style.display = "block";
-                document.getElementById("sort").classList.remove('hide');
+//                 document.getElementById("sort").classList.remove('hide');
             }
             else if (weight >= 10 & weight < 25){
                 var cost1 = excost + weight * 2;
@@ -156,7 +156,7 @@ function costFunc(){
                 document.getElementById("cost-tables").classList.remove('hide');                 
                 document.getElementById("email_form").style.display = "block";
 
-                document.getElementById("sort").classList.remove('hide');
+//                 document.getElementById("sort").classList.remove('hide');
                 
             }
             else {
@@ -185,7 +185,7 @@ function costFunc(){
                 document.getElementById('upspriorityexpresseta').innerHTML = new Date(estimatedexpress).toJSON().slice(0,10);
                 document.getElementById("cost-tables").classList.remove('hide');
                 document.getElementById("email_form").style.display = "block";
-                document.getElementById("sort").classList.remove('hide');
+//                 document.getElementById("sort").classList.remove('hide');
             }
 
         }
